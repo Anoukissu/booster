@@ -7,8 +7,6 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <audio src="music.mp3" autoplay loop></audio>
-
     body {
       min-height: 100vh;
       display: flex;
@@ -29,7 +27,7 @@
     #booster-container {
       position: relative;
       width: 220px;
-      height: 380px;
+      height: 375px;
       cursor: pointer;
       user-select: none;
     }
@@ -146,7 +144,8 @@
       <img src="fouille.png" alt="Fouille" />
     </div>
 
-  
+    <button id="new-btn" onclick="reset()">Ouvrir un autre booster</button>
+  </div>
 
   <script>
     function openBooster() {
@@ -213,5 +212,7 @@
       scene.style.display = 'flex';
     }
   </script>
+  
+  <audio src="music.mp3" autoplay loop></audio>
 </body>
 </html>
