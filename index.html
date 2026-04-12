@@ -155,6 +155,8 @@
       const tearL     = document.getElementById('tearL');
       const tearR     = document.getElementById('tearR');
 
+      document.getElementById('music').play();
+
       container.style.pointerEvents = 'none';
       hint.style.opacity = '0';
 
@@ -213,7 +215,7 @@
     }
   </script>
   
-<audio src="music.mp3" autoplay loop></audio>
+<audio id="music" src="music.mp3" loop></audio>
   
 </body>
 </html>
