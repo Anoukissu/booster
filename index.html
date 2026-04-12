@@ -127,7 +127,7 @@
 
   <div id="card-scene">
     <div class="pokemon-card" id="theCard">
-      <img src="fouille.png" alt="Fouille" />
+      <img id="cardImg" src="" alt="Carte" />
     </div>
     <button id="new-btn" onclick="reset()">Ouvrir un autre booster</button>
   </div>
@@ -135,7 +135,12 @@
   <audio id="music" src="music.mp3" loop preload="auto"></audio>
 
   <script>
+    const cartes = ['fouille.png', 'fouille2.jpg'];
+
     function openBooster() {
+      const aleatoire = cartes[Math.floor(Math.random() * cartes.length)];
+      document.getElementById('cardImg').src = aleatoire;
+
       const container = document.getElementById('booster-container');
       const hint      = document.getElementById('hint');
       const boosterEl = document.getElementById('booster-img');
@@ -174,9 +179,9 @@
       document.getElementById('card-scene').style.display = 'none';
       document.getElementById('theCard').classList.remove('revealed');
 
-      const scene  = document.getElementById('scene');
-      const tearL  = document.getElementById('tearL');
-      const tearR  = document.getElementById('tearR');
+      const scene = document.getElementById('scene');
+      const tearL = document.getElementById('tearL');
+      const tearR = document.getElementById('tearR');
 
       tearL.style.transition = 'none';
       tearR.style.transition = 'none';
