@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ouverture de Booster Pokémon</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: url('background.png') center center / cover no-repeat;
+      font-family: sans-serif;
+    }
+
+    /* ── BOOSTER SCENE ── */
+    #scene {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    #booster-container {
+      position: relative;
+      width: 220px;
+      height: 340px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #booster-img {
+      width: 220px;
+      height: 340px;
+      border-radius: 14px;
+      object-fit: cover;
+      display: block;
+      filter: drop-shadow(0 8px 32px rgba(0, 180, 255, 0.5));
+      transition: opacity 0.1s;
+    }
+
+    /* tear halves — same image split left/right */
+    .tear-half {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      opacity: 0;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                  opacity 0.4s ease;
+    }
+    .tear-half img {
+      position: absolute;
+      top: 0;
+      width: 220px;
+      height: 340px;
+      border-radius: 14px;
+      object-fit: cover;
+    }
+    #tearL { left: 0; transform-origin: left center; }
+    #tearL img { left: 0; }
+    #tearR { right: 0; transform-origin: right center; }
+    #tearR img { right: 0; }
+
+    #hint {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.85);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+      letter-spacing: 0.5px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.45} }
+
+    /* ── CARD SCENE ── */
+    #card-scene {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .pokemon-card {
+      width: 250px;
+      height: 350px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 3px solid #a0c8ff;
+      box-shadow: 0 0 40px rgba(100, 180, 255, 0.45);
+      transform: rotateY(90deg);
+      transition: transform 0.6s ease;
+    }
+    .pokemon-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .pokemon-card.revealed {
+      transform: rotateY(0deg);
+    }
+
+    /* replay button */
+    #new-btn {
+      padding: 11px 36px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      color: white;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+      transition: background 0.2s;
+    }
+    #new-btn:hover { background: rgba(255, 255, 255, 0.25); }
+  </style>
+</head>
+<body>
+
+  <!-- BOOSTER -->
+  <div id="scene">
+    <div id="booster-container" onclick="openBooster()">
+      <img id="booster-img" src="booster.png" alt="Booster" />
+
+      <!-- left half tear -->
+      <div class="tear-half" id="tearL">
+        <img src="booster.png" alt="" />
+      </div>
+      <!-- right half tear -->
+      <div class="tear-half" id="tearR">
+        <img src="booster.png" alt="" />
+      </div>
+    </div>
+
+    <p id="hint">Clique pour ouvrir le booster !</p>
+  </div>
+
+  <!-- CARD REVEAL -->
+  <div id="card-scene">
+    <div class="pokemon-card" id="theCard">
+      <img src="fouille.png" alt="Fouille" />
+    </div>
+
+    <button id="new-btn" onclick="reset()">Ouvrir un autre booster</button>
+  </div>
+
+  <script>
+    function openBooster() {
+      const container = document.getElementById('booster-container');
+      const hint      = document.getElementById('hint');
+      const boosterEl = document.getElementById('booster-img');
+      const tearL     = document.getElementById('tearL');
+      const tearR     = document.getElementById('tearR');
+
+      container.style.pointerEvents = 'none';
+      hint.style.opacity = '0';
+
+      // show halves
+      tearL.style.opacity = '1';
+      tearR.style.opacity = '1';
+      boosterEl.style.opacity = '0';
+
+      // fly apart
+      setTimeout(() => {
+        tearL.style.transform = 'translateX(-90px) rotate(-14deg)';
+        tearR.style.transform = 'translateX(90px) rotate(14deg)';
+        tearL.style.opacity   = '0';
+        tearR.style.opacity   = '0';
+      }, 80);
+
+      // show card
+      setTimeout(() => {
+        document.getElementById('scene').style.display = 'none';
+        const cs = document.getElementById('card-scene');
+        cs.style.display = 'flex';
+        setTimeout(() => {
+          document.getElementById('theCard').classList.add('revealed');
+        }, 100);
+      }, 650);
+    }
+
+    function reset() {
+      // hide card scene
+      document.getElementById('card-scene').style.display = 'none';
+      document.getElementById('theCard').classList.remove('revealed');
+
+      // restore booster scene
+      const scene   = document.getElementById('scene');
+      const booster = document.getElementById('booster-img');
+      const tearL   = document.getElementById('tearL');
+      const tearR   = document.getElementById('tearR');
+
+      // disable transitions for instant reset
+      tearL.style.transition = 'none';
+      tearR.style.transition = 'none';
+      tearL.style.transform  = '';
+      tearR.style.transform  = '';
+      tearL.style.opacity    = '0';
+      tearR.style.opacity    = '0';
+
+      setTimeout(() => {
+        tearL.style.transition = '';
+        tearR.style.transition = '';
+      }, 50);
+
+      booster.style.opacity = '1';
+      document.getElementById('hint').style.opacity = '1';
+      document.getElementById('booster-container').style.pointerEvents = '';
+      scene.style.display = 'flex';
+    }
+  </script>
+</body>
+</html>
