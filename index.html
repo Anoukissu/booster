@@ -157,7 +157,8 @@
       const aleatoire = cartes[Math.floor(Math.random() * cartes.length)];
       document.getElementById('cardImg').src = aleatoire;
 
-      const index = cartes.indexOf(aleatoire);
+      const match = aleatoire.img.match(/fouille(\d*)/);
+const index = match[1] ? parseInt(match[1]) - 1 : 0;
 const obtenues = JSON.parse(localStorage.getItem('cartodex') || '[]');
 if (!obtenues.includes(index)) {
   obtenues.push(index);
