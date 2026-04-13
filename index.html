@@ -158,7 +158,7 @@
       document.getElementById('cardImg').src = aleatoire;
 
       const match = aleatoire.img.match(/fouille(\d*)/);
-const index = match[1] ? parseInt(match[1]) - 1 : 0;
+const index = parseInt(aleatoire.img.replace('fouille', '').replace('.png', '')) - 1 || 0;
 const obtenues = JSON.parse(localStorage.getItem('cartodex') || '[]');
 if (!obtenues.includes(index)) {
   obtenues.push(index);
