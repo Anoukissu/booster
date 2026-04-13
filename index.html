@@ -112,6 +112,21 @@
       transition: background 0.2s;
     }
     #new-btn:hover { background: rgba(255, 255, 255, 0.25); }
+
+    #cartodex-btn {
+  padding: 11px 36px;
+  background: rgba(255, 215, 0, 0.2);
+  border: 1px solid rgba(255, 215, 0, 0.6);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #ffe066;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  text-decoration: none;
+  transition: background 0.2s;
+  display: inline-block;
+}
+#cartodex-btn:hover { background: rgba(255, 215, 0, 0.35); }
   </style>
 </head>
 <body>
@@ -123,6 +138,7 @@
       <div class="tear-half" id="tearR"><img src="booster.png" alt="" /></div>
     </div>
     <p id="hint">Clique pour ouvrir le booster !</p>
+    <a id="cartodex-btn" href="cartodex.html">Cartodex</a>
   </div>
 
   <div id="card-scene">
@@ -140,6 +156,13 @@
     function openBooster() {
       const aleatoire = cartes[Math.floor(Math.random() * cartes.length)];
       document.getElementById('cardImg').src = aleatoire;
+
+      const index = cartes.indexOf(aleatoire);
+const obtenues = JSON.parse(localStorage.getItem('cartodex') || '[]');
+if (!obtenues.includes(index)) {
+  obtenues.push(index);
+  localStorage.setItem('cartodex', JSON.stringify(obtenues));
+}
 
       const container = document.getElementById('booster-container');
       const hint      = document.getElementById('hint');
