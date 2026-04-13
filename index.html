@@ -151,23 +151,13 @@
   <audio id="music" src="music.mp3" loop preload="auto"></audio>
 
   <script>
-    const cartes = [
-  { id: 1, img: 'fouille.png' },
-  { id: 2, img: 'fouille2.png' },
-  { id: 10, img: 'fouille10.png' },
-  { id: 3, img: 'fouille3.png' },
-  { id: 4, img: 'fouille4.png' },
-  { id: 5, img: 'fouille5.png' },
-  { id: 6, img: 'fouille6.png' },
-  { id: 7, img: 'fouille7.png' },
-  { id: 8, img: 'fouille8.png' },
-  { id: 9, img: 'fouille9.png' },
+    const cartes = ['fouille.png', 'fouille2.png', 'fouille10.png'];
 
     function openBooster() {
       const aleatoire = cartes[Math.floor(Math.random() * cartes.length)];
-document.getElementById('cardImg').src = aleatoire.img;
+      document.getElementById('cardImg').src = aleatoire;
 
-      const index = aleatoire.id;
+      const index = cartes.indexOf(aleatoire);
 const obtenues = JSON.parse(localStorage.getItem('cartodex') || '[]');
 if (!obtenues.includes(index)) {
   obtenues.push(index);
